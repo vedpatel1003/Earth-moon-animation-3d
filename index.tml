@@ -1,0 +1,80 @@
+<!DOCTYPE html> 
+<html>     
+     <head>         
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          <meta charset="UTF-8">        
+     </head>    
+<body>         
+    <script src="https://threejs.org/build/three.js"></script> 
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script> 
+    <div id="details">
+        No. of rotation [Earth]: <span id="earthSp"></span><br>
+        No. of revolution [Moon]: <span id="moonSp"></span><br>
+        —> Try to move, zoom in and zoom out.<br>
+        —> Find out your country.
+    </div> 
+    <script>
+  "use strict";
+   var scene,camera,renderer,earthGeo,earthTexture,earthMat,earth,controls,gridHelper,axesHelper,moonGeo,moonTexture,moonMat,moon,t=0,speed=2,box;
+
+const init=()=>{
+
+    box = confirm("Do you want 8x movement?\n\nIf yes, than click ok or we'll go with the default value of 2x.");
+    if(box==true){speed=8;}
+
+    scene = new THREE.Scene();          
+    camera = new THREE.PerspectiveCamera(100, window.innerWidth/window.innerHeight, 0.1, 1000);             
+    renderer = new THREE.WebGLRenderer({antialias:true});
+    
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.body.appendChild(renderer.domElement);                                                     
+    
+    earthGeo = new THREE.SphereGeometry(40, 50, 50, 0, Math.PI*2, 0, Math.PI);
+    earthTexture = new THREE.TextureLoader().load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1vqQYYMKnZ069NWI9aQXHHrEwZPvQeiseGQ&usqp=CAU");                 
+    earthMat = new THREE.MeshBasicMaterial({map:earthTexture});
+    
+    moonGeo = new THREE.SphereGeometry(6.67, 50, 50, 0, Math.PI*2, 0, Math.PI);
+    moonTexture = new THREE.TextureLoader().load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY5_MqqL7-pYA4GsECumVlgVKjf_o3fTWCyw&usqp=CAU");
+    moonMat = new THREE.MeshBasicMaterial({map:moonTexture});
+    
+    earth = new THREE.Mesh(earthGeo, earthMat);
+    moon = new THREE.Mesh(moonGeo, moonMat);
+    
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    gridHelper = new THREE.GridHelper(1200, 50, 0x00ffff);
+    //axesHelper = new THREE.AxesHelper(1200);
+    
+    camera.position.z = 120;
+    camera.position.y = 120;
+    controls.maxDistance = 300;
+    gridHelper.position.y = -40; 
+    moon.position.x = -80;
+    scene.add(earth,moon,gridHelper/*,axesHelper*/);  
+    
+    let then = 0;
+    let deltatime = 0;
+    
+    const animate=()=>{    
+      setInterval(()=>{
+      
+        controls.update();
+        renderer.render(scene, camera);
+        t += speed*0.00035714286;
+        earth.rotation.y += speed*0.01;
+        document.getElementById('earthSp').innerHTML = Math.floor(earth.rotation.y/6);
+        let moonX = 75*Math.sin(t) + 0;
+        let moonZ = 75*Math.cos(t) + 0;
+        moon.position.set(moonX, 0, moonZ);
+        document.getElementById('moonSp').innerHTML = Math.floor(t/6);
+        renderer.render(scene, camera); 
+      },1000/60); 
+    }
+    animate();     
+} 
+
+onload=init;
+    </script>                 
+</body> 
+</html>

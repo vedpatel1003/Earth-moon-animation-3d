@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Laila&display=swap');        
+          body{                                  
+          margin:0;                                             
+          padding:0;                                                
+          scroll-behavior: smooth;                                                
+          font-family: 'Laila', sans-serif;                                                
+          }       
+          h6{                                                
+          background-color:#F5F5F5;                                                
+          color:#040404;                                                
+          padding:2%;                                                
+          margin:0;                                                        
+          font-size:2rem;                                         
+          } 
+          #details{
+          width:auto;
+          background-color:#F5F5F5;                               
+          color:#040404;                                                
+          padding:2%;                                                
+          margin:0;                                                        
+          font-size:1rem;
+          position:absolute;
+          right:0;
+          border:1px solid #040404;
+          } 
+          #earthSp,#moonSp{
+          font-weight:bold;
+          }                       
+          @media screen and (max-width: 600px){         
+           h6{                                                                                      
+           font-size:0.65rem;
+           } 
+           #details{
+           font-size:0.65rem;
+           }
+          }
